@@ -2,6 +2,7 @@ import React from 'react';
 import { render, waitFor, screen } from '@testing-library/react';
 import { AuthProvider, AuthContext } from '../context/AuthContext';
 
+// Ensure endpoints mock matches import path in AuthContext
 jest.mock('../services/endpoints', () => ({
   AuthAPI: {
     me: jest.fn().mockResolvedValue({ id: '1', email: 'me@example.com', is_active: true }),
@@ -31,8 +32,8 @@ test('AuthProvider initializes and supports login', async () => {
     </AuthProvider>
   );
 
-  // after mount, fetchMe will set user; wait robustly
-  await screen.findByText(/me@example\.com/i);
+  // Wait for user field via testId then assert content within waitFor
+  await screen.findByTestId('user');
   await waitFor(() => expect(screen.getByTestId('user')).toHaveTextContent('me@example.com'));
 
   // With a token present, isAuthenticated should be true
