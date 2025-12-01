@@ -1,30 +1,42 @@
 import React from 'react';
-import { render, screen, waitFor, cleanup } from '@testing-library/react';
+import { render, screen, waitFor, cleanup, waitForElementToBeRemoved } from '@testing-library/react';
 import Portfolio from '../pages/Portfolio';
 
-// Explicitly mock PortfolioAPI to return deterministic data
+// Explicitly mock PortfolioAPI and redefine per test
+const mockGet = jest.fn();
+
 jest.mock('../services/endpoints', () => ({
   PortfolioAPI: {
-    get: jest.fn().mockResolvedValue({
-      id: 1,
-      name: 'Default',
-      currency: 'USD',
-      total_value: 0,
-      holdings: [],
-    }),
+    get: (...args) => mockGet(...args),
   },
 }));
+
+beforeEach(() => {
+  jest.clearAllMocks();
+  mockGet.mockResolvedValue({
+    id: 1,
+    name: 'Default',
+    currency: 'USD',
+    total_value: 0,
+    holdings: [],
+  });
+});
 
 afterEach(() => {
   // ensure mocks and DOM are reset after each test
   cleanup();
   jest.clearAllMocks();
-  jest.resetModules();
 });
 
 test('renders portfolio summary', async () => {
   render(<Portfolio />);
-  // Wait for the portfolio-name element to be populated with "Default"
-  const nameEl = await screen.findByTestId('portfolio-name');
-  await waitFor(() => expect(nameEl).toHaveTextContent(/Default/));
+
+  // Wait for initial Loading... to go away
+  await waitForElementToBeRemoved(() => screen.getByText(/Loading.../i));
+
+  // Then assert the portfolio name becomes "Default"
+  await waitFor(() => expect(screen.getByTestId('portfolio-name')).toHaveTextContent(/Default/));
+
+  // Optionally ensure API was called
+  expect(mockGet).toHaveBeenCalled();
 });

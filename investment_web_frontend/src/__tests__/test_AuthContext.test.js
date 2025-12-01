@@ -2,11 +2,11 @@ import React from 'react';
 import { render, waitFor, screen, cleanup } from '@testing-library/react';
 import { AuthProvider, AuthContext } from '../context/AuthContext';
 
-// Ensure endpoints mock matches import path in AuthContext and returns deterministic user
-const mockMe = jest.fn().mockResolvedValue({ id: '1', email: 'me@example.com', is_active: true });
-const mockLogin = jest.fn().mockResolvedValue({ token: 'abc123' });
-const mockRegister = jest.fn().mockResolvedValue({ id: '1' });
-const mockLogout = jest.fn().mockResolvedValue({ ok: true });
+// Define endpoint mocks with stable defaults and reassign in beforeEach
+const mockMe = jest.fn();
+const mockLogin = jest.fn();
+const mockRegister = jest.fn();
+const mockLogout = jest.fn();
 
 jest.mock('../services/endpoints', () => ({
   AuthAPI: {
@@ -27,10 +27,19 @@ function Consumer() {
   );
 }
 
+beforeEach(() => {
+  // Reset and redefine mock implementations per test
+  jest.clearAllMocks();
+  mockMe.mockResolvedValue({ id: '1', email: 'me@example.com', is_active: true });
+  mockLogin.mockResolvedValue({ token: 'abc123' });
+  mockRegister.mockResolvedValue({ id: '1' });
+  mockLogout.mockResolvedValue({ ok: true });
+  window.localStorage.removeItem('auth_token');
+});
+
 afterEach(() => {
   cleanup();
   jest.clearAllMocks();
-  jest.resetModules();
   window.localStorage.removeItem('auth_token');
 });
 
@@ -44,11 +53,11 @@ test('AuthProvider initializes and supports login', async () => {
     </AuthProvider>
   );
 
-  // Wait for me() to resolve and user to be populated
-  await waitFor(() => {
-    expect(screen.getByTestId('user').textContent).toBe('me@example.com');
-  });
+  // Wait for user node to exist then for it to contain the email
+  const userEl = await screen.findByTestId('user');
+  await waitFor(() => expect(userEl).toHaveTextContent('me@example.com'));
 
   // With a token present, isAuthenticated should be true
-  expect(screen.getByTestId('is-auth').textContent).toBe('true');
+  const isAuthEl = screen.getByTestId('is-auth');
+  expect(isAuthEl).toHaveTextContent('true');
 });
