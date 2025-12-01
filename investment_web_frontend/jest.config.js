@@ -1,19 +1,16 @@
+/** Jest configuration for React app with axios mock mapping. */
 module.exports = {
   testEnvironment: 'jsdom',
-  transform: {
-    '^.+\\.(js|jsx)$': 'babel-jest',
-  },
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   moduleNameMapper: {
-    // Map axios ESM to CJS build for Jest compatibility
-    '^axios$': require.resolve('axios/dist/node/axios.cjs'),
-    '\\.(css|less|scss)$': 'identity-obj-proxy',
+    '^axios$': '<rootDir>/__mocks__/axios.js',
+    // Map CSS and asset imports if present
+    '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
   },
-  setupFilesAfterEnv: ['<rootDir>/src/setupTests.js'],
-  testPathIgnorePatterns: ['/node_modules/', '/build/'],
-  collectCoverageFrom: [
-    'src/**/*.{js,jsx}',
-    '!src/index.js',
-    '!src/**/*.test.{js,jsx}',
-    '!src/__tests__/**',
+  transform: {
+    '^.+\\.(js|jsx|ts|tsx)$': 'babel-jest',
+  },
+  transformIgnorePatterns: [
+    '/node_modules/(?!axios)/',
   ],
 };
