@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, waitFor, screen, cleanup } from '@testing-library/react';
-import { AuthProvider, AuthContext } from '../context/AuthContext';
+import { AuthProvider, useAuth } from '../context/AuthContext';
 
 // Define endpoint mocks with stable defaults and reassign in beforeEach
 const mockMe = jest.fn();
@@ -18,7 +18,7 @@ jest.mock('../services/endpoints', () => ({
 }));
 
 function Consumer() {
-  const ctx = React.useContext(AuthContext);
+  const ctx = useAuth();
   return (
     <div>
       <div data-testid="is-auth">{String(ctx.isAuthenticated)}</div>
