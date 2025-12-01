@@ -16,9 +16,10 @@ describe('HealthCheck Page', () => {
 
     render(<HealthCheck />);
 
-    // Wait for OK text to appear
+    // Wait for OK text to appear (component stringifies response object)
     await waitFor(() => {
-      const okText = screen.getByText(/ok/i);
+      // It renders as a JSON string, e.g., {"status":"ok"}
+      const okText = screen.getByText(/\"status\"\s*:\s*\"ok\"/i);
       expect(okText).toBeInTheDocument();
     });
   });
@@ -28,11 +29,10 @@ describe('HealthCheck Page', () => {
 
     render(<HealthCheck />);
 
-    // Wait for error indication to appear
+    // Wait for actual error UI text shown by component
     await waitFor(() => {
-      // Look for common error keywords
-      const errorPossible = screen.queryByText(/error/i) || screen.queryByText(/unhealthy/i) || screen.queryByText(/failed/i);
-      expect(errorPossible).toBeInTheDocument();
+      const errorText = screen.getByText(/backend not reachable/i);
+      expect(errorText).toBeInTheDocument();
     });
   });
 });
