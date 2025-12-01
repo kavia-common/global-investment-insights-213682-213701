@@ -13,6 +13,10 @@ This project provides a minimal React template with a clean, modern UI and minim
 
 In the project directory, you can run:
 
+### `npm run test:ci`
+
+Runs tests in CI-friendly non-interactive mode.
+
 ### `npm start`
 
 Runs the app in development mode.\

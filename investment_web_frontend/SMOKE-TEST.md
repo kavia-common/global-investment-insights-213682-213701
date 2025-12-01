@@ -1,16 +1,12 @@
-# Frontend Smoke Test (Preview)
+# Frontend Tests
 
-Pre-reqs
-- Backend reachable at REACT_APP_API_BASE_URL and includes frontend origin in CORS.
+Run:
+- `npm test -- --watchAll=false` (CI mode)
+- `make test-frontend` from project root
 
-Steps
-1) Open / (home) and ensure UI renders
-2) Navigate to /login
-3) Register a test user via /register (or use existing)
-4) Login and confirm redirect to /dashboard
-5) Visit /onboarding, step through, click Finish (200 response)
-6) Visit /suggestions; verify cards load (mock data ok)
-7) Visit /portfolio; verify JSON summary renders
-8) Visit /pricing; verify plans or empty state
-9) Toggle theme (moon/sun) in navbar, verify persistence
-10) Logout; protected routes redirect to /login
+The suite includes:
+- AuthContext behavior with mocked endpoints
+- ProtectedRoute auth gating
+- Login/Register forms invoking context
+- Onboarding flow step navigation
+- Suggestions and Portfolio basic rendering with mocked APIs
