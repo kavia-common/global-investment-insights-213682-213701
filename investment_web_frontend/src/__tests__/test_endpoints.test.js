@@ -1,15 +1,13 @@
-import axios from 'axios';
 import api from '../services/apiClient';
 import { AuthAPI, OnboardingAPI, SuggestionsAPI, PortfolioAPI, PricingAPI } from '../services/endpoints';
 
 jest.mock('../services/apiClient', () => {
-  // Create a lightweight mock axios instance compatible with endpoints usage
   const mock = {
-    get: jest.fn((url, config) => Promise.resolve({ data: { url, method: 'get', config: config || {} } })),
-    post: jest.fn((url, body, config) => Promise.resolve({ data: { url, method: 'post', body: body || {}, config: config || {} } })),
+    get: jest.fn((url, config) => Promise.resolve({ data: { url, method: 'get', config: config || {}, ok: true } })),
+    post: jest.fn((url, body, config) => Promise.resolve({ data: { url, method: 'post', body: body || {}, config: config || {}, ok: true } })),
     interceptors: {
-      request: { handlers: [], use: jest.fn() },
-      response: { handlers: [], use: jest.fn() },
+      request: { handlers: [], use: jest.fn(function (fulfilled, rejected) { this.handlers.push({ fulfilled, rejected }); }) },
+      response: { handlers: [], use: jest.fn(function (fulfilled, rejected) { this.handlers.push({ fulfilled, rejected }); }) },
     },
     defaults: { baseURL: 'http://test-base' },
   };
@@ -47,65 +45,61 @@ describe('endpoints exports and stability', () => {
   });
 
   test('AuthAPI.login posts to /auth/login with email and password', async () => {
-    const data = await AuthAPI.login('user@example.com', 'secret');
+    const result = await AuthAPI.login('user@example.com', 'secret');
     expect(api.post).toHaveBeenCalledWith('/auth/login', { email: 'user@example.com', password: 'secret' });
-    expect(data.url).toBe('/auth/login');
-    expect(data.method).toBe('post');
-    expect(data.body).toEqual({ email: 'user@example.com', password: 'secret' });
+    expect(result).toBeDefined();
+    expect(result.ok).toBe(true);
   });
 
   test('AuthAPI.register posts to /auth/register with payload', async () => {
     const payload = { email: 'a@b.com', password: 'topsecret' };
-    const data = await AuthAPI.register(payload);
+    const result = await AuthAPI.register(payload);
     expect(api.post).toHaveBeenCalledWith('/auth/register', payload);
-    expect(data.url).toBe('/auth/register');
-    expect(data.method).toBe('post');
-    expect(data.body).toEqual(payload);
+    expect(result).toBeDefined();
+    expect(result.ok).toBe(true);
   });
 
   test('AuthAPI.me gets /auth/me', async () => {
-    const data = await AuthAPI.me();
+    const result = await AuthAPI.me();
     expect(api.get).toHaveBeenCalledWith('/auth/me');
-    expect(data.url).toBe('/auth/me');
-    expect(data.method).toBe('get');
+    expect(result).toBeDefined();
+    expect(result.ok).toBe(true);
   });
 
   test('OnboardingAPI.save posts to /onboarding', async () => {
     const payload = { experience: 'beginner' };
-    const data = await OnboardingAPI.save(payload);
+    const result = await OnboardingAPI.save(payload);
     expect(api.post).toHaveBeenCalledWith('/onboarding', payload);
-    expect(data.url).toBe('/onboarding');
-    expect(data.method).toBe('post');
-    expect(data.body).toEqual(payload);
+    expect(result).toBeDefined();
+    expect(result.ok).toBe(true);
   });
 
   test('OnboardingAPI.get gets /onboarding', async () => {
-    const data = await OnboardingAPI.get();
+    const result = await OnboardingAPI.get();
     expect(api.get).toHaveBeenCalledWith('/onboarding');
-    expect(data.url).toBe('/onboarding');
-    expect(data.method).toBe('get');
+    expect(result).toBeDefined();
+    expect(result.ok).toBe(true);
   });
 
   test('SuggestionsAPI.getSuggestions gets /suggestions with query params', async () => {
     const params = { market: 'US', limit: 5 };
-    const data = await SuggestionsAPI.getSuggestions(params);
+    const result = await SuggestionsAPI.getSuggestions(params);
     expect(api.get).toHaveBeenCalledWith('/suggestions', { params });
-    expect(data.url).toBe('/suggestions');
-    expect(data.method).toBe('get');
-    expect(data.config).toEqual({ params });
+    expect(result).toBeDefined();
+    expect(result.ok).toBe(true);
   });
 
   test('PortfolioAPI.get gets /portfolio', async () => {
-    const data = await PortfolioAPI.get();
+    const result = await PortfolioAPI.get();
     expect(api.get).toHaveBeenCalledWith('/portfolio');
-    expect(data.url).toBe('/portfolio');
-    expect(data.method).toBe('get');
+    expect(result).toBeDefined();
+    expect(result.ok).toBe(true);
   });
 
   test('PricingAPI.getPlans gets /pricing/plans', async () => {
-    const data = await PricingAPI.getPlans();
+    const result = await PricingAPI.getPlans();
     expect(api.get).toHaveBeenCalledWith('/pricing/plans');
-    expect(data.url).toBe('/pricing/plans');
-    expect(data.method).toBe('get');
+    expect(result).toBeDefined();
+    expect(result.ok).toBe(true);
   });
 });

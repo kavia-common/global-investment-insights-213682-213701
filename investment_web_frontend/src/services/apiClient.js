@@ -13,6 +13,8 @@ const api = axios.create({
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('auth_token');
   if (token) {
+    // Ensure headers object exists before setting
+    if (!config.headers) config.headers = {};
     config.headers.Authorization = `Bearer ${token}`;
   }
   return config;
@@ -21,10 +23,7 @@ api.interceptors.request.use((config) => {
 // Basic error handler passthrough
 api.interceptors.response.use(
   (response) => response,
-  (error) => {
-    // Could add centralized error logging/handling here
-    return Promise.reject(error);
-  }
+  (error) => Promise.reject(error)
 );
 
 export default api;
