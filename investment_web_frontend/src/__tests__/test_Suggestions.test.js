@@ -1,24 +1,34 @@
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, cleanup } from '@testing-library/react';
 import Suggestions from '../pages/Suggestions';
 
-// Ensure mock path matches import path in Suggestions component
+// Mock SuggestionsAPI to deterministically return Apple Inc
+const mockGetSuggestions = jest.fn().mockResolvedValue({
+  items: [{ symbol: 'AAPL', summary: 'Apple Inc', score: 0.9 }],
+});
+
 jest.mock('../services/endpoints', () => ({
   SuggestionsAPI: {
-    // Component expects either an array or an object with { items: [...] }
-    getSuggestions: jest.fn().mockResolvedValue({ items: [{ symbol: 'AAPL', summary: 'Apple Inc', score: 0.9 }] }),
+    getSuggestions: (...args) => mockGetSuggestions(...args),
   },
 }));
+
+afterEach(() => {
+  cleanup();
+  jest.clearAllMocks();
+  jest.resetModules();
+});
 
 test('renders suggestions list', async () => {
   render(<Suggestions />);
 
-  // Wait for suggestion summary text to appear
+  // Wait until the summary "Apple Inc" shows up
   const summaryEl = await screen.findByText(/Apple Inc/i);
-
-  // Assert suggestion content is rendered and stable
   await waitFor(() => {
     expect(summaryEl).toBeInTheDocument();
     expect(screen.getByText(/AAPL/i)).toBeInTheDocument();
   });
+
+  // Ensure API called at least once on mount with some params
+  expect(mockGetSuggestions).toHaveBeenCalled();
 });
