@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, waitFor, cleanup, waitForElementToBeRemoved } from '@testing-library/react';
+import { render, screen, waitFor, cleanup } from '@testing-library/react';
 import Portfolio from '../pages/Portfolio';
 
 // Explicitly mock PortfolioAPI and redefine per test
@@ -31,12 +31,12 @@ afterEach(() => {
 test('renders portfolio summary', async () => {
   render(<Portfolio />);
 
-  // Wait for initial Loading... to go away
-  await waitForElementToBeRemoved(() => screen.getByText(/Loading.../i));
+  // Wait for the async effect to populate the summary field
+  await waitFor(async () => {
+    const nameEl = await screen.findByTestId('portfolio-name');
+    expect(nameEl).toHaveTextContent(/Default/);
+  });
 
-  // Then assert the portfolio name becomes "Default"
-  await waitFor(() => expect(screen.getByTestId('portfolio-name')).toHaveTextContent(/Default/));
-
-  // Optionally ensure API was called
+  // Ensure API was called
   expect(mockGet).toHaveBeenCalled();
 });

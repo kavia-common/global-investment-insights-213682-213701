@@ -53,9 +53,11 @@ test('AuthProvider initializes and supports login', async () => {
     </AuthProvider>
   );
 
-  // Wait for user node to exist then for it to contain the email
-  const userEl = await screen.findByTestId('user');
-  await waitFor(() => expect(userEl).toHaveTextContent('me@example.com'));
+  // Wait for me() to resolve and user to be populated
+  await waitFor(() => {
+    const userEl = screen.getByTestId('user');
+    expect(userEl.textContent).toBe('me@example.com');
+  });
 
   // With a token present, isAuthenticated should be true
   const isAuthEl = screen.getByTestId('is-auth');

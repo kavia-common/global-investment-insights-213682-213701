@@ -14,8 +14,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "test:ci": "cross-env CI=true react-scripts test --watchAll=false",
-    "test:coverage": "cross-env CI=true react-scripts test --watchAll=false --coverage",
+    "test:ci": "cross-env CI=true react-scripts test --watchAll=false --coverage --coverageReporters=text --coverageReporters=lcov",
+    "test:coverage": "cross-env CI=true react-scripts test --watchAll=false --coverage --coverageReporters=text --coverageReporters=lcov",
     "eject": "react-scripts eject"
   },
   "jest": {
@@ -38,13 +38,9 @@
         "statements": 70
       }
     },
-    "setupFilesAfterEnv": [
-      "<rootDir>/jest.setup.js",
-      "<rootDir>/src/setupTests.js"
-    ],
     "testEnvironment": "jsdom",
     "moduleNameMapper": {
-      "\\\\.(css|less|scss|sass)$": "identity-obj-proxy"
+      "\\\\.\\.(css|less|scss|sass)$": "identity-obj-proxy"
     }
   },
   "eslintConfig": {

@@ -26,15 +26,12 @@ afterEach(() => {
 test('renders suggestions list', async () => {
   render(<Suggestions />);
 
-  // Wait for the summary text to appear
-  const summaryEl = await screen.findByText(/Apple Inc/i);
-  expect(summaryEl).toBeInTheDocument();
-
-  // Assert that the symbol is rendered too
+  // Wait for one of the idea fields to appear (summary or symbol)
   await waitFor(() => {
-    expect(screen.getByText(/AAPL/i)).toBeInTheDocument();
+    expect(mockGetSuggestions).toHaveBeenCalled();
   });
 
-  // Ensure API called on mount
-  expect(mockGetSuggestions).toHaveBeenCalled();
+  // The UI shows idea.symbol as the card title and idea.summary as label text
+  expect(await screen.findByText(/AAPL/i)).toBeInTheDocument();
+  expect(await screen.findByText(/Apple Inc/i)).toBeInTheDocument();
 });
