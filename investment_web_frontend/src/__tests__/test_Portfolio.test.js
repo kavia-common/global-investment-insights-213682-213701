@@ -10,10 +10,8 @@ jest.mock('../services/endpoints', () => ({
 
 test('renders portfolio summary', async () => {
   render(<Portfolio />);
-  // Wait for "Loading..." state to disappear
-  await waitFor(() =>
-    expect(screen.queryByText('Loading...')).not.toBeInTheDocument()
-  );
+  // Wait for expected loaded content to appear
+  await screen.findByText(/Default/);
 
   // Assert against a field we know is rendered within JSON
   expect(screen.getByText(/Default/)).toBeInTheDocument();

@@ -25,14 +25,16 @@ test('AuthProvider initializes and supports login', async () => {
   // Ensure a token exists so AuthProvider triggers fetchMe on mount
   window.localStorage.setItem('auth_token', 'test');
 
-  const { getByTestId } = render(
+  const { findByTestId, getByTestId } = render(
     <AuthProvider>
       <Consumer />
     </AuthProvider>
   );
 
   // after mount, fetchMe will set user
-  await waitFor(() => expect(getByTestId('user').textContent).toBe('me@example.com'));
+  const userEl = await findByTestId('user');
+  await waitFor(() => expect(userEl.textContent).toBe('me@example.com'));
+
   // With a token present, isAuthenticated should be true
   expect(getByTestId('is-auth').textContent).toBe('true');
 

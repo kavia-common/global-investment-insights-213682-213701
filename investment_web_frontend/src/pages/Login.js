@@ -31,12 +31,12 @@ export default function Login() {
       <p className="label">Sign in to continue</p>
       <form onSubmit={handleSubmit} className="card">
         <div className="form-row">
-          <label className="label">Email</label>
-          <input className="input" type="email" value={email} onChange={(e)=>setEmail(e.target.value)} required />
+          <label className="label" htmlFor="login-email">Email</label>
+          <input id="login-email" className="input" type="email" value={email} onChange={(e)=>setEmail(e.target.value)} required />
         </div>
         <div className="form-row">
-          <label className="label">Password</label>
-          <input className="input" type="password" value={password} onChange={(e)=>setPassword(e.target.value)} required />
+          <label className="label" htmlFor="login-password">Password</label>
+          <input id="login-password" className="input" type="password" value={password} onChange={(e)=>setPassword(e.target.value)} required />
         </div>
         {error && <div style={{ color: 'var(--error)', marginBottom: 8 }}>{error}</div>}
         <div className="actions">

@@ -11,10 +11,8 @@ jest.mock('../services/endpoints', () => ({
 test('renders suggestions list', async () => {
   render(<Suggestions />);
 
-  // Wait for "Loading..." on the Refresh button to clear
-  await waitFor(() =>
-    expect(screen.getByRole('button', { name: /Refresh/i })).toBeEnabled()
-  );
+  // Wait for suggestion content to render
+  await screen.findByText(/Apple Inc/i);
 
   // Assert suggestion content is rendered
   expect(screen.getByText(/Apple Inc/i)).toBeInTheDocument();

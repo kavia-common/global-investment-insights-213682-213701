@@ -34,16 +34,16 @@ export default function Register() {
       <p className="label">Start your investment journey</p>
       <form onSubmit={handleSubmit} className="card">
         <div className="form-row">
-          <label className="label">Full Name</label>
-          <input className="input" name="name" value={form.name} onChange={onChange} required />
+          <label className="label" htmlFor="register-full-name">Full Name</label>
+          <input id="register-full-name" className="input" name="name" value={form.name} onChange={onChange} required />
         </div>
         <div className="form-row">
-          <label className="label">Email</label>
-          <input className="input" type="email" name="email" value={form.email} onChange={onChange} required />
+          <label className="label" htmlFor="register-email">Email</label>
+          <input id="register-email" className="input" type="email" name="email" value={form.email} onChange={onChange} required />
         </div>
         <div className="form-row">
-          <label className="label">Password</label>
-          <input className="input" type="password" name="password" value={form.password} onChange={onChange} required />
+          <label className="label" htmlFor="register-password">Password</label>
+          <input id="register-password" className="input" type="password" name="password" value={form.password} onChange={onChange} required />
         </div>
         {error && <div style={{ color: 'var(--error)', marginBottom: 8 }}>{error}</div>}
         <div className="actions">
