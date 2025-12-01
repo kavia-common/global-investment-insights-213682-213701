@@ -7,6 +7,13 @@ export const AuthContext = createContext(null);
  * Handles auth token persistence and user fetching.
  * Provides login, register, logout, and auth state.
  */
+
+// PUBLIC_INTERFACE
+export function useAuth() {
+  /** Return the AuthContext for consumers. */
+  return React.useContext(AuthContext);
+}
+
 // PUBLIC_INTERFACE
 export function AuthProvider({ children }) {
   const [token, setToken] = useState(() => localStorage.getItem('auth_token') || null);
