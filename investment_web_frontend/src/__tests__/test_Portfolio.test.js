@@ -11,7 +11,9 @@ jest.mock('../services/endpoints', () => ({
 
 test('renders portfolio summary', async () => {
   render(<Portfolio />);
-  // Wait for explicit portfolio name element
-  const nameEl = await screen.findByTestId('portfolio-name');
-  await waitFor(() => expect(nameEl).toHaveTextContent(/Default/));
+  // Wait until the portfolio name is populated
+  await waitFor(async () => {
+    const nameEl = await screen.findByTestId('portfolio-name');
+    expect(nameEl).toHaveTextContent(/Default/);
+  });
 });

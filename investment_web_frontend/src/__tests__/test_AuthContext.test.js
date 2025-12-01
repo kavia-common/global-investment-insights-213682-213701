@@ -32,9 +32,10 @@ test('AuthProvider initializes and supports login', async () => {
     </AuthProvider>
   );
 
-  // Wait for user field via testId then assert content within waitFor
-  await screen.findByTestId('user');
-  await waitFor(() => expect(screen.getByTestId('user')).toHaveTextContent('me@example.com'));
+  // Wait for me() to resolve and user to be populated
+  await waitFor(() => {
+    expect(screen.getByTestId('user').textContent).toBe('me@example.com');
+  });
 
   // With a token present, isAuthenticated should be true
   expect(screen.getByTestId('is-auth').textContent).toBe('true');
