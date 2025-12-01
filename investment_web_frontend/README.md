@@ -17,6 +17,10 @@ In the project directory, you can run:
 
 Runs tests in CI-friendly non-interactive mode.
 
+### `npm run test:coverage`
+
+Runs tests with Jest coverage output (text and lcov) and enforces minimum coverage thresholds.
+
 ### `npm start`
 
 Runs the app in development mode.\
