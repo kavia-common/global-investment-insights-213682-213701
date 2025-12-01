@@ -5,7 +5,7 @@ module.exports = {
   transform: {
     '^.+\\.[jt]sx?$': 'babel-jest',
   },
-  // Transpile ESM packages that Jest can't run directly; axios is mocked but included here for safety.
+  // Ensure certain ESM packages are transpiled; axios included for safety though we mock it.
   transformIgnorePatterns: ['/node_modules/(?!(axios)/)'],
   moduleNameMapper: {
     '^axios$': '<rootDir>/__mocks__/axios.js',
@@ -13,4 +13,6 @@ module.exports = {
   },
   testPathIgnorePatterns: ['/node_modules/'],
   moduleFileExtensions: ['js', 'jsx', 'json', 'node'],
+  // Make sure Jest resolves from project root
+  roots: ['<rootDir>/src', '<rootDir>/__mocks__'],
 };
