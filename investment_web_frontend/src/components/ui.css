@@ -1,0 +1,157 @@
+:root {
+  --primary: #2563EB;
+  --secondary: #F59E0B;
+  --error: #EF4444;
+  --bg: #f9fafb;
+  --surface: #ffffff;
+  --text: #111827;
+  --muted: #6b7280;
+  --border: #e5e7eb;
+}
+
+[data-theme="dark"] {
+  --bg: #0f172a;
+  --surface: #111827;
+  --text: #e5e7eb;
+  --muted: #9ca3af;
+  --border: #1f2937;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+}
+
+a { color: inherit; text-decoration: none; }
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+.grid {
+  display: grid;
+  gap: 16px;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+}
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 10px 16px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.nav .brand {
+  font-weight: 700;
+  color: var(--primary);
+  margin-right: 16px;
+}
+
+.nav .nav-link {
+  margin-right: 8px;
+  color: var(--muted);
+}
+
+.nav .nav-link.active {
+  color: var(--primary);
+}
+
+.nav .btn, .btn, .btn-secondary, .btn-outline, .btn-danger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--primary);
+  background: var(--primary);
+  color: white;
+  font-weight: 600;
+  margin-left: 8px;
+}
+
+.btn-secondary {
+  background: var(--surface);
+  color: var(--text);
+  border-color: var(--border);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--primary);
+  border-color: var(--primary);
+}
+
+.btn-danger {
+  background: var(--error);
+  border-color: var(--error);
+  color: white;
+}
+
+.sidebar {
+  width: 240px;
+  border-right: 1px solid var(--border);
+  padding: 16px;
+  background: var(--surface);
+  min-height: calc(100vh - 52px);
+  position: sticky;
+  top: 52px;
+}
+
+.sidebar-link {
+  display: block;
+  padding: 10px 12px;
+  color: var(--muted);
+  border-radius: 8px;
+}
+
+.sidebar-link.active {
+  color: var(--primary);
+  background: rgba(37, 99, 235, 0.08);
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+}
+
+.input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text);
+}
+
+.label {
+  color: var(--muted);
+  font-size: 14px;
+  margin-bottom: 6px;
+  display: inline-block;
+}
+
+.form-row {
+  margin-bottom: 12px;
+}
+
+.actions {
+  margin-top: 12px;
+  display: flex;
+  gap: 8px;
+}
