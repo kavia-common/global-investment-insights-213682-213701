@@ -19,12 +19,10 @@
     "eject": "react-scripts eject"
   },
   "jest": {
-    "collectCoverage": true,
     "coverageReporters": [
       "text",
       "lcov"
     ],
-    "coverageDirectory": "coverage",
     "coveragePathIgnorePatterns": [
       "/node_modules/",
       "/public/",
@@ -38,7 +36,6 @@
         "statements": 70
       }
     },
-    "testEnvironment": "jsdom",
     "moduleNameMapper": {
       "\\\\.\\.(css|less|scss|sass)$": "identity-obj-proxy"
     }
