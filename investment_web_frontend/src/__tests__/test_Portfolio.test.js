@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import Portfolio from '../pages/Portfolio';
 
 jest.mock('../services/endpoints', () => ({
@@ -10,9 +10,7 @@ jest.mock('../services/endpoints', () => ({
 
 test('renders portfolio summary', async () => {
   render(<Portfolio />);
-  // Wait for expected loaded content to appear
-  await screen.findByText(/Default/);
-
-  // Assert against a field we know is rendered within JSON
-  expect(screen.getByText(/Default/)).toBeInTheDocument();
+  // Wait for explicit portfolio name element
+  const nameEl = await screen.findByTestId('portfolio-name');
+  expect(nameEl).toHaveTextContent(/Default/);
 });

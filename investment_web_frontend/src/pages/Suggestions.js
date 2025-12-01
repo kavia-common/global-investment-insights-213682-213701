@@ -52,7 +52,7 @@ export default function Suggestions() {
         {ideas.map((idea, idx) => (
           <div key={idx} className="card">
             <h3>{idea.symbol || idea.name || 'Asset'}</h3>
-            <p className="label">{idea.summary || idea.description || 'No description'}</p>
+            <p className="label">{idea.summary || idea.description || idea.name || 'No description'}</p>
             {idea.score != null && <p>Score: {idea.score}</p>}
           </div>
         ))}

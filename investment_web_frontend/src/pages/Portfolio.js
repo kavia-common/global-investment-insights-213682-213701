@@ -25,6 +25,8 @@ export default function Portfolio() {
       <div className="grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))' }}>
         <div className="card">
           <h3>Summary</h3>
+          {/* Explicit element to assert portfolio name in tests */}
+          <div data-testid="portfolio-name">{summary?.name || ''}</div>
           <pre style={{ whiteSpace: 'pre-wrap' }}>{summary ? JSON.stringify(summary, null, 2) : 'Loading...'}</pre>
         </div>
       </div>

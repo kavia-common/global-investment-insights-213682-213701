@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import Suggestions from '../pages/Suggestions';
 
 jest.mock('../services/endpoints', () => ({

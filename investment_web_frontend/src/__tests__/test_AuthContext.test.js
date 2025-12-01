@@ -1,12 +1,12 @@
 import React from 'react';
-import { render, waitFor } from '@testing-library/react';
+import { render, waitFor, screen } from '@testing-library/react';
 import { AuthProvider, AuthContext } from '../context/AuthContext';
 
 jest.mock('../services/endpoints', () => ({
   AuthAPI: {
-    me: jest.fn().mockResolvedValue({ id: 1, email: 'me@example.com', is_active: true }),
+    me: jest.fn().mockResolvedValue({ id: '1', email: 'me@example.com', is_active: true }),
     login: jest.fn().mockResolvedValue({ token: 'abc123' }),
-    register: jest.fn().mockResolvedValue({ id: 1 }),
+    register: jest.fn().mockResolvedValue({ id: '1' }),
     logout: jest.fn().mockResolvedValue({ ok: true }),
   },
 }));
@@ -25,18 +25,18 @@ test('AuthProvider initializes and supports login', async () => {
   // Ensure a token exists so AuthProvider triggers fetchMe on mount
   window.localStorage.setItem('auth_token', 'test');
 
-  const { findByTestId, getByTestId } = render(
+  render(
     <AuthProvider>
       <Consumer />
     </AuthProvider>
   );
 
-  // after mount, fetchMe will set user
-  const userEl = await findByTestId('user');
-  await waitFor(() => expect(userEl.textContent).toBe('me@example.com'));
+  // after mount, fetchMe will set user; wait robustly
+  await screen.findByText(/me@example\.com/i);
+  await waitFor(() => expect(screen.getByTestId('user')).toHaveTextContent('me@example.com'));
 
   // With a token present, isAuthenticated should be true
-  expect(getByTestId('is-auth').textContent).toBe('true');
+  expect(screen.getByTestId('is-auth').textContent).toBe('true');
 
   // cleanup
   window.localStorage.removeItem('auth_token');
