@@ -10,7 +10,6 @@ const axiosMock = {
   },
   defaults: {},
   get: jest.fn((url) => {
-    // Normalize url
     const path = typeof url === 'string' ? url : (url && url.url) || '';
 
     if (path.includes('/auth/me')) {
@@ -24,14 +23,16 @@ const axiosMock = {
           id: 1,
           name: 'Default',
           currency: 'USD',
-          total_value: 0.0,
-          holdings: [],
+          total_value: 100000,
+          holdings: [
+            { id: 1, portfolio_id: 1, symbol: 'AAPL', quantity: 10, average_price: 150, market: 'US' },
+          ],
         },
       });
     }
 
     if (path.includes('/suggestions')) {
-      // Suggestions list default
+      // Suggestions list default with Apple Inc
       return Promise.resolve({
         data: {
           items: [
@@ -43,6 +44,7 @@ const axiosMock = {
               rationale: 'Apple Inc growth',
               target_price: 200.0,
               market: 'US',
+              name: 'Apple Inc',
             },
           ],
         },
@@ -75,6 +77,7 @@ const axiosMock = {
           rationale: payload?.rationale || 'Based on mock data',
           target_price: payload?.target_price ?? 200.0,
           market: payload?.market || 'US',
+          name: symbol === 'AAPL' ? 'Apple Inc' : 'Company',
         },
       });
     }
@@ -82,7 +85,7 @@ const axiosMock = {
     if (path.includes('/portfolio/holdings')) {
       return Promise.resolve({
         data: {
-          id: 1,
+          id: 2,
           portfolio_id: 1,
           symbol: payload?.symbol || 'AAPL',
           quantity: payload?.quantity ?? 1,
@@ -101,6 +104,28 @@ const axiosMock = {
           risk_tolerance: payload?.risk_tolerance ?? 'low',
           goals: payload?.goals ?? 'wealth',
           markets: payload?.markets ?? 'US',
+        },
+      });
+    }
+
+    if (path.includes('/subscription')) {
+      return Promise.resolve({
+        data: {
+          id: 1,
+          user_id: 1,
+          is_active: payload?.is_active ?? true,
+          plan: payload?.plan ?? 'free',
+        },
+      });
+    }
+
+    if (path.includes('/integrations')) {
+      return Promise.resolve({
+        data: {
+          id: 1,
+          user_id: 1,
+          provider: payload?.provider ?? 'alpaca',
+          access_key: payload?.access_key ?? null,
         },
       });
     }

@@ -1,4 +1,4 @@
 import '@testing-library/jest-dom';
 
-// Automatically mock axios (picked from __mocks__/axios.js)
+// Ensure axios is mocked in CRA's default test setup as well
 jest.mock('axios');
