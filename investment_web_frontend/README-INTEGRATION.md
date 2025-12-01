@@ -10,6 +10,8 @@ This SPA is wired for:
 Configure the backend base URL in .env:
 REACT_APP_API_BASE_URL=https://your-backend.example.com
 
+Note: Ensure the backend CORS allows your frontend origin (BACKEND_CORS_ORIGINS must include your http(s)://host:port).
+
 Pages:
 - /login, /register (public)
 - /onboarding, /dashboard, /suggestions, /portfolio, /pricing, /settings (protected)
