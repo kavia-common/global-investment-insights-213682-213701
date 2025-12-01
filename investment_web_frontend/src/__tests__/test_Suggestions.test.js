@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import Suggestions from '../pages/Suggestions';
 
 jest.mock('../services/endpoints', () => ({
@@ -9,6 +9,14 @@ jest.mock('../services/endpoints', () => ({
 }));
 
 test('renders suggestions list', async () => {
-  const { getByText } = render(<Suggestions />);
-  await waitFor(() => expect(getByText(/Apple Inc/i)).toBeInTheDocument());
+  render(<Suggestions />);
+
+  // Wait for "Loading..." on the Refresh button to clear
+  await waitFor(() =>
+    expect(screen.getByRole('button', { name: /Refresh/i })).toBeEnabled()
+  );
+
+  // Assert suggestion content is rendered
+  expect(screen.getByText(/Apple Inc/i)).toBeInTheDocument();
+  expect(screen.getByText(/AAPL/i)).toBeInTheDocument();
 });

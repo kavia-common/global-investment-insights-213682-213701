@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import Portfolio from '../pages/Portfolio';
 
 jest.mock('../services/endpoints', () => ({
@@ -9,6 +9,12 @@ jest.mock('../services/endpoints', () => ({
 }));
 
 test('renders portfolio summary', async () => {
-  const { getByText } = render(<Portfolio />);
-  await waitFor(() => expect(getByText(/Default/)).toBeInTheDocument());
+  render(<Portfolio />);
+  // Wait for "Loading..." state to disappear
+  await waitFor(() =>
+    expect(screen.queryByText('Loading...')).not.toBeInTheDocument()
+  );
+
+  // Assert against a field we know is rendered within JSON
+  expect(screen.getByText(/Default/)).toBeInTheDocument();
 });

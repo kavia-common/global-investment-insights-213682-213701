@@ -22,6 +22,9 @@ function Consumer() {
 }
 
 test('AuthProvider initializes and supports login', async () => {
+  // Ensure a token exists so AuthProvider triggers fetchMe on mount
+  window.localStorage.setItem('auth_token', 'test');
+
   const { getByTestId } = render(
     <AuthProvider>
       <Consumer />
@@ -30,5 +33,9 @@ test('AuthProvider initializes and supports login', async () => {
 
   // after mount, fetchMe will set user
   await waitFor(() => expect(getByTestId('user').textContent).toBe('me@example.com'));
-  expect(getByTestId('is-auth').textContent).toBe('false');
+  // With a token present, isAuthenticated should be true
+  expect(getByTestId('is-auth').textContent).toBe('true');
+
+  // cleanup
+  window.localStorage.removeItem('auth_token');
 });
